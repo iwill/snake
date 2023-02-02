@@ -46,7 +46,7 @@ for (var x = 0; x < config.width; x++) {
 }
 
 // new game
-var game = new snake.Game(config);
+var game = new snake.SnakeGame(config);
 
 // customized drawing
 game.draw = function(snake, food) {
@@ -85,7 +85,7 @@ game.ready();
 
 // go!
 document.onkeydown = function(event) {
-    game.go(snake.directions.[event.keyCode]);
+    game.go(snake.SnakeGame.directions.[event.keyCode]);
 };
 
 // */
@@ -144,11 +144,11 @@ document.onkeydown = function(event) {
             var curr = this.foods[0];
             var head = new Point(curr.x, curr.y);
             head.move(direction);
-            if (this.has(head)
-                || !this.map.has(head)) {
+            if (this.has(head.x, head.y)
+                || !this.map.has(head.x, head.y)) {
                 return null;
             }
-            if (head.eq(food.x, food,y)) {
+            if (head.eq(food.x, food.y)) {
                 this.eat(food);
                 return food;
             }
@@ -165,20 +165,20 @@ document.onkeydown = function(event) {
         }
     };
     
-    function Game(config) {
+    function SnakeGame(config) {
         this.map = new Map(Math.max(config.width, 2), Math.max(config.height, 2));
         this.speed = Math.max(config.speed, 1);
         this.classes = config.classes || [];
         this.intervalID = undefined;
     }
-    Game.prototype = {
+    SnakeGame.prototype = {
         _blank: function() {
             var blank = [];
             for (var x = 0; x < this.map.width; x++) {
                 for (var y = 0; y < this.map.height; y++) {
-                    if (!this.snake.has(x, y)) {
+                     if (!this.snake || !this.snake.has(x, y)) {
                         blank.push(new Point(x, y));
-                    }
+                     }
                 }
             }
             return blank;
@@ -205,49 +205,53 @@ document.onkeydown = function(event) {
             this._draw();
         },
         go: function(direction) {
-            this.direction = direction;
-            this.resume();
+            if (direction) {
+                this.direction = direction;
+                this.resume();
+            }
         },
         pause: function() {
             clearInterval(this.intervalID);
             this.intervalID = undefined;
         },
         resume: function() {
-            if (this.intervalID != undefined) {
+            var inst = this;
+            if (inst.intervalID != undefined) {
                 return;
             }
-            this.intervalID = setInterval(function() {
-                var head = this.snake.move(this.direction, this.food);
+            inst.intervalID = setInterval(function() {
+                var head = inst.snake.move(inst.direction, inst.food);
                 if (!head) {
-                    this.pause();
-                    this.snake.die = true;
+                    inst.pause();
+                    inst.snake.die = true;
                 }
-                else if (this.food.eq(head.x, head.y)) {
-                    this.food = this._cook();
-                    if (!this.food) {
-                        this.pause();
-                        this.snake.win = true;
+                else if (inst.food.eq(head.x, head.y)) {
+                    inst.food = inst._cook();
+                    if (!inst.food) {
+                        inst.pause();
+                        inst.snake.win = true;
                     }
                 }
-                this._draw();
-            }, this.speed);
-            this._draw();
+                inst._draw();
+            }, inst.speed);
+            inst._draw();
         },
         draw: undefined // function(snake, food) { ... }
     };
     
-    // export
+    SnakeGame.directions = {
+        37: new Point(-1,  0), // keyCode: left
+        38: new Point( 0, -1), // keyCode: up
+        39: new Point( 1,  0), // keyCode: right
+        40: new Point( 0,  1)  // keyCode: down
+    };
+    
+    // public
     this.snake = {
         Point:  Point,
         Food:   Food,
         Map:    Map,
         Snake:  Snake,
-        Game:   Game,
-        directions: {
-            37: new Point(-1,  0), // keyCode: left
-            38: new Point( 0, -1), // keyCode: up
-            39: new Point( 1,  0), // keyCode: right
-            40: new Point( 0,  1)  // keyCode: down
-        }
+        SnakeGame: SnakeGame
     };
 })();
