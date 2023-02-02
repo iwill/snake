@@ -28,7 +28,7 @@ rl.question(query, callback)
 replServer.displayPrompt([preserveCursor])
 
 // config
-var config = {
+let config = {
     width: 10,
     height: 10,
     speed: 1000,
@@ -36,39 +36,39 @@ var config = {
 };
 
 // canvas
-var $snakeCancas = $("#snakeCancas");
-for (var x = 0; x < config.width; x++) {
-    for (var y = 0; y < config.height; y++) {
-        var $div = $("<div />");
+let $snakeCancas = $("#snakeCancas");
+for (let x = 0; x < config.width; x++) {
+    for (let y = 0; y < config.height; y++) {
+        let $div = $("<div />");
         $div.attr("id", "snakePoint_" + x + "_" + y).addClass("snake-point");
         $snakeCancas.append($div);
     }
 }
 
 // new game
-var game = new snake.SnakeGame(config);
+let game = new snake.SnakeGame(config);
 
 // customized drawing
 game.draw = function(snake, food) {
     // clean
-    for (var x = 0; x < config.width; x++) {
-        for (var y = 0; y < config.height; y++) {
-            var $div = $("#snakePoint_" + x + "_" + y, $snakeCancas);
-            for (var i in classes) {
-                var clazz = classes[i];
+    for (let x = 0; x < config.width; x++) {
+        for (let y = 0; y < config.height; y++) {
+            let $div = $("#snakePoint_" + x + "_" + y, $snakeCancas);
+            for (let i in classes) {
+                let clazz = classes[i];
                 $div.removeClass(clazz).removeClass("snake-win").removeClass("snake-die");
             }
         }
     }
     // draw snake
-    for (var i in snake.foods) {
-        var point = snake.foods[i];
-        var $div = $("#snakePoint_" + point.x + "_" + point.y, $snakeCancas);
+    for (let i in snake.foods) {
+        let point = snake.foods[i];
+        let $div = $("#snakePoint_" + point.x + "_" + point.y, $snakeCancas);
         $div.addClass(point.clazz);
     }
     // draw food
     if (food) {
-        var $div = $("#snakePoint_" + food.x + "_" + food.y, $snakeCancas);
+        let $div = $("#snakePoint_" + food.x + "_" + food.y, $snakeCancas);
         $div.addClass(food.clazz);
     }
     // game over
@@ -129,8 +129,8 @@ document.onkeydown = function(event) {
     }
     Snake.prototype = {
         has: function(x, y) {
-            for (var i = 0; i < this.foods.length; i++) {
-                var food = this.foods[i];
+            for (let i = 0; i < this.foods.length; i++) {
+                let food = this.foods[i];
                 if (food.eq(x, y)) {
                     return true;
                 }
@@ -141,8 +141,8 @@ document.onkeydown = function(event) {
         // return the food if eaten
         // return the head of snake if moved
         move: function(direction, food) {
-            var curr = this.foods[0];
-            var head = new Point(curr.x, curr.y);
+            let curr = this.foods[0];
+            let head = new Point(curr.x, curr.y);
             head.move(direction);
             if (this.has(head.x, head.y)
                 || !this.map.has(head.x, head.y)) {
@@ -152,9 +152,9 @@ document.onkeydown = function(event) {
                 this.eat(food);
                 return food;
             }
-            for (var i = this.foods.length - 1; i >= 0; i--) {
-                var food = this.foods[i];
-                var prev = this.foods[i - 1] || head;
+            for (let i = this.foods.length - 1; i >= 0; i--) {
+                let food = this.foods[i];
+                let prev = this.foods[i - 1] || head;
                 food.x = prev.x;
                 food.y = prev.y;
             }
@@ -173,9 +173,9 @@ document.onkeydown = function(event) {
     }
     SnakeGame.prototype = {
         _blank: function() {
-            var blank = [];
-            for (var x = 0; x < this.map.width; x++) {
-                for (var y = 0; y < this.map.height; y++) {
+            let blank = [];
+            for (let x = 0; x < this.map.width; x++) {
+                for (let y = 0; y < this.map.height; y++) {
                      if (!this.snake || !this.snake.has(x, y)) {
                         blank.push(new Point(x, y));
                      }
@@ -184,16 +184,16 @@ document.onkeydown = function(event) {
             return blank;
         },
         _cook: function() {
-            var blank = this._blank();
+            let blank = this._blank();
             if (!blank.length) {
                 return null;
             }
-            var point = blank[Math.floor(blank.length * Math.random())];
-            var clazz = this.classes[Math.floor(this.classes.length * Math.random())];
+            let point = blank[Math.floor(blank.length * Math.random())];
+            let clazz = this.classes[Math.floor(this.classes.length * Math.random())];
             return new Food(point.x, point.y, clazz);
         },
         _draw: function() {
-            var draw = this.draw || function(snake, food) {
+            let draw = this.draw || function(snake, food) {
                 console.log("snake: " + snake);
                 console.log("food: " + food);
             };
@@ -215,26 +215,26 @@ document.onkeydown = function(event) {
             this.intervalID = undefined;
         },
         resume: function() {
-            var inst = this;
-            if (inst.intervalID != undefined) {
+            if (this.intervalID != undefined) {
                 return;
             }
-            inst.intervalID = setInterval(function() {
-                var head = inst.snake.move(inst.direction, inst.food);
+            let self = this;
+            this.intervalID = setInterval(function() {
+                let head = self.snake.move(self.direction, self.food);
                 if (!head) {
-                    inst.pause();
-                    inst.snake.die = true;
+                    self.pause();
+                    self.snake.die = true;
                 }
-                else if (inst.food.eq(head.x, head.y)) {
-                    inst.food = inst._cook();
-                    if (!inst.food) {
-                        inst.pause();
-                        inst.snake.win = true;
+                else if (self.food.eq(head.x, head.y)) {
+                    self.food = self._cook();
+                    if (!self.food) {
+                        self.pause();
+                        self.snake.win = true;
                     }
                 }
-                inst._draw();
-            }, inst.speed);
-            inst._draw();
+                self._draw();
+            }, self.speed);
+            this._draw();
         },
         draw: undefined // function(snake, food) { ... }
     };

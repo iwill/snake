@@ -1,110 +1,110 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>snake</title>
-	<style type="text/css">
-		#snakeCancas {
-			position: absolute;
-			margin: 0 auto;
-			width: 300px;
-			height: 300px;
-			left: 50%;
-			top: 50%;
-			margin-left: -150px;
-			margin-top: -150px;
-			border: 1px solid #EEE5DE;
-		}
-
-		.snake-point {
-			position: absolute;
-			width: 10px;
-			height: 10px;
-			border-right: 1px solid #EEE5DE;
-			border-bottom: 1px solid #EEE5DE;
-		}
-
-		.red {
-			background-color: red;
-		}
-
-		.green {
-			background-color: green;
-		}
-
-		.blue {
-			background-color: blue;
-		}
-	</style>
-	<script type="text/javascript" src="js/jquery.min.js"></script>
-	<script type="text/javascript" src="js/snake.js"></script>
-	<script type="text/javascript">
-		$(function() {
-			// config
-			var config = {
-			    width: 30,
-			    height: 30,
-			    speed: 100,
-			    classes: ["red", "green", "blue"]
-			};
-
-			// canvas
-			var $snakeCancas = $("#snakeCancas");
-			for (var x = 0; x < config.width; x++) {
-			    for (var y = 0; y < config.height; y++) {
-			        var $div = $("<div />");
-			        $div.attr("id", "snakePoint_" + x + "_" + y).addClass("snake-point");
-			        $div.css({"left": x * 10, "top": y * 10});
-			        $snakeCancas.append($div);
-			    }
-			}
-
-			// new game
-			var game = new snake.SnakeGame(config);
-
-			// customized drawing
-			game.draw = function(snake, food) {
-			    // clean
-			    for (var x = 0; x < config.width; x++) {
-			        for (var y = 0; y < config.height; y++) {
-			            var $div = $("#snakePoint_" + x + "_" + y, $snakeCancas);
-			            for (var i in config.classes) {
-			                var clazz = config.classes[i];
-			                $div.removeClass(clazz).removeClass("snake-win").removeClass("snake-die");
-			            }
-			        }
-			    }
-			    // draw snake
-			    for (var i in snake.foods) {
-			        var point = snake.foods[i];
-			        var $div = $("#snakePoint_" + point.x + "_" + point.y, $snakeCancas);
-			        $div.addClass(point.clazz);
-			    }
-			    // draw food
-			    if (food) {
-			        var $div = $("#snakePoint_" + food.x + "_" + food.y, $snakeCancas);
-			        $div.addClass(food.clazz);
-			    }
-			    // game over
-			    if (snake.win) {
-			        $snakeCancas.addClass("snake-win");
-			    }
-			    else if (snake.die) {
-			        $snakeCancas.addClass("snake-die");
-			    }
-			};
-
-			// ready ...
-			game.ready();
-
-			// go!
-			document.onkeydown = function(event) {
-			    game.go(snake.SnakeGame.directions[event.keyCode]);
-			};
-
-		});
-	</script>
+    <title>snake</title>
+    <style type="text/css">
+        #snakeCancas {
+            position: absolute;
+            margin: 0 auto;
+            width: 300px;
+            height: 300px;
+            left: 50%;
+            top: 50%;
+            margin-left: -150px;
+            margin-top: -150px;
+            border: 1px solid #EEE5DE;
+        }
+        
+        .snake-point {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-right: 1px solid #EEE5DE;
+            border-bottom: 1px solid #EEE5DE;
+        }
+        
+        .red {
+            background-color: red;
+        }
+        
+        .green {
+            background-color: green;
+        }
+        
+        .blue {
+            background-color: blue;
+        }
+    </style>
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/snake.js"></script>
+    <script type="text/javascript">
+        $(function() {
+            // config
+            var config = {
+                width: 30,
+                height: 30,
+                speed: 100,
+                classes: ["red", "green", "blue"]
+            };
+            
+            // canvas
+            var $snakeCancas = $("#snakeCancas");
+            for (var x = 0; x < config.width; x++) {
+                for (var y = 0; y < config.height; y++) {
+                    var $div = $("<div />");
+                    $div.attr("id", "snakePoint_" + x + "_" + y).addClass("snake-point");
+                    $div.css({"left": x * 10, "top": y * 10});
+                    $snakeCancas.append($div);
+                }
+            }
+            
+            // new game
+            var game = new snake.SnakeGame(config);
+            
+            // customized drawing
+            game.draw = function(snake, food) {
+                // clean
+                for (var x = 0; x < config.width; x++) {
+                    for (var y = 0; y < config.height; y++) {
+                        var $div = $("#snakePoint_" + x + "_" + y, $snakeCancas);
+                        for (var i in config.classes) {
+                            var clazz = config.classes[i];
+                            $div.removeClass(clazz).removeClass("snake-win").removeClass("snake-die");
+                        }
+                    }
+                }
+                // draw snake
+                for (var i in snake.foods) {
+                    var point = snake.foods[i];
+                    var $div = $("#snakePoint_" + point.x + "_" + point.y, $snakeCancas);
+                    $div.addClass(point.clazz);
+                }
+                // draw food
+                if (food) {
+                    var $div = $("#snakePoint_" + food.x + "_" + food.y, $snakeCancas);
+                    $div.addClass(food.clazz);
+                }
+                // game over
+                if (snake.win) {
+                    $snakeCancas.addClass("snake-win");
+                }
+                else if (snake.die) {
+                    $snakeCancas.addClass("snake-die");
+                }
+            };
+            
+            // ready ...
+            game.ready();
+            
+            // go!
+            document.onkeydown = function(event) {
+                game.go(snake.SnakeGame.directions[event.keyCode]);
+            };
+            
+        });
+    </script>
 </head>
 <body>
-	<div id="snakeCancas"></div>
+    <div id="snakeCancas"></div>
 </body>
 </html>
