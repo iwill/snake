@@ -23,17 +23,13 @@
             border-bottom: 1px solid #EEE5DE;
         }
         
-        .red {
-            background-color: red;
-        }
-        
-        .green {
-            background-color: green;
-        }
-        
-        .blue {
-            background-color: blue;
-        }
+        .red    { background-color: red;    }
+        .orange { background-color: orange; }
+        .yellow { background-color: yellow; }
+        .green  { background-color: green;  }
+        .blue   { background-color: blue;   }
+        .purple { background-color: purple; }
+        .black  { background-color: black;  }
     </style>
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/snake.js"></script>
@@ -41,10 +37,10 @@
         $(function() {
             // config
             var config = {
-                width: 30,
+                width:  30,
                 height: 30,
-                speed: 100,
-                classes: ["red", "green", "blue"]
+                speed:  200,
+                classes: ["red", "orange", "yellow", "green", "blue", "purple", "black"]
             };
             
             // canvas

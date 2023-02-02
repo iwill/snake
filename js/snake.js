@@ -29,9 +29,9 @@ replServer.displayPrompt([preserveCursor])
 
 // config
 let config = {
-    width: 10,
+    width:  10,
     height: 10,
-    speed: 1000,
+    speed:  1000,
     classes: ["red", "green", "blue"]
 };
 
