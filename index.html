@@ -6,19 +6,19 @@
         #snakeCancas {
             position: absolute;
             margin: 0 auto;
-            width: 300px;
-            height: 300px;
+            width: 600px;
+            height: 600px;
             left: 50%;
             top: 50%;
-            margin-left: -150px;
-            margin-top: -150px;
+            margin-left: -300px;
+            margin-top: -300px;
             border: 1px solid #EEE5DE;
         }
         
         .snake-point {
             position: absolute;
-            width: 10px;
-            height: 10px;
+            width: 20px;
+            height: 20px;
             border-right: 1px solid #EEE5DE;
             border-bottom: 1px solid #EEE5DE;
         }
@@ -34,6 +34,10 @@
     <script type="text/javascript" src="js/jquery.min.js"></script>
     <script type="text/javascript" src="js/snake.js"></script>
     <script type="text/javascript">
+        /// TODO:
+        /// 1. auto calculate sizes
+        /// 2. control with gesture and prevent scrolling for mobile
+        
         $(function() {
             // config
             var config = {
@@ -49,7 +53,7 @@
                 for (var y = 0; y < config.height; y++) {
                     var $div = $("<div />");
                     $div.attr("id", "snakePoint_" + x + "_" + y).addClass("snake-point");
-                    $div.css({"left": x * 10, "top": y * 10});
+                    $div.css({"left": x * 20, "top": y * 20});
                     $snakeCancas.append($div);
                 }
             }
