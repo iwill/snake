@@ -22,6 +22,21 @@
             border-right: 1px solid #EEE5DE;
             border-bottom: 1px solid #EEE5DE;
         }
+
+        .snake-head:after {
+            content: ":";
+            font-size: 20px;
+            color: white;
+            width: 20px;
+            height: 20px;
+            text-align: center;
+            position: absolute;
+            top: -2px;
+        }
+
+        .snake-head.yellow:after {
+            color: black;
+        }
         
         .red    { background-color: red;    }
         .orange { background-color: orange; }
@@ -69,7 +84,7 @@
                         var $div = $("#snakePoint_" + x + "_" + y, $snakeCancas);
                         for (var i in config.classes) {
                             var clazz = config.classes[i];
-                            $div.removeClass(clazz).removeClass("snake-win").removeClass("snake-die");
+                            $div.removeClass(clazz).removeClass("snake-head").removeClass("snake-win").removeClass("snake-die");
                         }
                     }
                 }
@@ -78,6 +93,9 @@
                     var point = snake.foods[i];
                     var $div = $("#snakePoint_" + point.x + "_" + point.y, $snakeCancas);
                     $div.addClass(point.clazz);
+                    if (i == 0) {
+                        $div.addClass("snake-head");
+                    }
                 }
                 // draw food
                 if (food) {
